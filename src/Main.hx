@@ -1,8 +1,8 @@
 import h2d.Text;
 import h3d.Vector;
-import h3d.prim.Cube;
-import h3d.scene.Mesh;
 import h3d.scene.CameraController;
+import h3d.prim.Cube;
+import h3d.scene.Object;
 import h3d.scene.fwd.DirLight;
 import h3d.scene.fwd.LightSystem;
 import hxd.Key;
@@ -13,7 +13,7 @@ import hxd.res.DefaultFont;
 class Main extends hxd.App {
   var map : WorldMap;
   var tf : Text;
-  var player : Mesh;
+  var player : Object;
 
   static inline var PLAYER_SPEED = 10;
 
@@ -21,18 +21,16 @@ class Main extends hxd.App {
     map = new WorldMap(16, 256, s3d);
 
     // add primitive for player mesh
-    var cube = new Cube();
-    cube.translate( -0.5, -0.5, -0.5);
-    cube.unindex();
-    cube.addNormals();
-    cube.addUVs();
+    var cache = new h3d.prim.ModelCache();
 
     // add player in middle, to move around like a character
-    player = new Mesh(cube, s3d);
+    player = cache.loadModel(Res.player);
     player.x = 64;
-    player.y = 64;
-    player.z = 0.501;
-    player.material.color.setColor(0xFF00FF);
+    player.y = -494 + 64; // skeleton model is off by -494 for some reason, import problem?
+    player.z = 5;
+
+    // not sure when but when no longer used?
+    // cache.dispose();
 
     s3d.addChild(player);
 
@@ -54,11 +52,17 @@ class Main extends hxd.App {
   override function update(dt: Float) {
     tf.text = 'player pos: [${player.x}, ${player.y}] drawCalls: ${engine.drawCalls}';
 
-    // move player left/right
+    // move player left/right/up/down
     if(Key.isDown(Key.LEFT) || Key.isDown(Key.A)) {
       player.x -= dt * PLAYER_SPEED;
     } else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.D)) {
       player.x += dt * PLAYER_SPEED;
+    }
+
+    if(Key.isDown(Key.UP) || Key.isDown(Key.W)) {
+      player.y -= dt * PLAYER_SPEED;
+    } else if (Key.isDown(Key.DOWN) || Key.isDown(Key.S)) {
+      player.y += dt * PLAYER_SPEED;
     }
 
     if(Key.isDown(Key.ESCAPE)) {
