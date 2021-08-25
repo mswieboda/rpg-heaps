@@ -26,11 +26,11 @@ class Main extends hxd.App {
     // add player in middle, to move around like a character
     player = cache.loadModel(Res.player);
     player.x = 64;
-    player.y = -494 + 64; // skeleton model is off by -494 for some reason, import problem?
-    player.z = 5;
+    player.y = 64;
+    player.z = 0.99;
 
     // not sure when but when no longer used?
-    // cache.dispose();
+    cache.dispose();
 
     s3d.addChild(player);
 

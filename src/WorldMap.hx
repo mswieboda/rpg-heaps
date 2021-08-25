@@ -17,7 +17,6 @@ class WorldMesh extends World {
     soil.material.texture = Texture.fromColor(0x408020);
     soil.material.shadows = true;
   }
-
 }
 
 class WorldMap extends WorldMesh {
