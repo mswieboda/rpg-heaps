@@ -14,8 +14,12 @@ class Main extends hxd.App {
   var map : WorldMap;
   var tf : Text;
   var player : Object;
+  var cameraController : CameraController;
 
   static inline var PLAYER_SPEED = 10;
+  static inline var CAMERA_DISTANCE = 64;
+  static inline var CAMERA_INITIAL_THETA_DEGREES = 90;
+  static inline var CAMERA_INITIAL_PHI_DEGREES = 60;
 
   override function init() {
     map = new WorldMap(16, 256, s3d);
@@ -25,21 +29,25 @@ class Main extends hxd.App {
 
     // add player in middle, to move around like a character
     player = cache.loadModel(Res.player);
+
+    cache.dispose();
+
     player.x = 64;
     player.y = 64;
     player.z = 0.99;
 
-    // not sure when but when no longer used?
-    cache.dispose();
-
     s3d.addChild(player);
 
-    // set camera
-    s3d.camera.target.set(64, 64, 0);
-    s3d.camera.pos.set(128, 128, 64);
-    s3d.camera.zNear = 1;
-    s3d.camera.zFar = 100;
-    new CameraController(s3d).loadFromCamera();
+    // set initial camera
+    cameraController = new CameraController(s3d);
+    cameraController.loadFromCamera();
+    cameraController.set(
+      CAMERA_DISTANCE,
+      hxd.Math.degToRad(CAMERA_INITIAL_THETA_DEGREES),
+      hxd.Math.degToRad(CAMERA_INITIAL_PHI_DEGREES),
+      new h3d.col.Point(64, 64, 0)
+    );
+    cameraController.toTarget();
 
     // add directional light
     new DirLight(new Vector( 0.3, -0.4, -0.9), s3d);
@@ -52,22 +60,52 @@ class Main extends hxd.App {
   override function update(dt: Float) {
     tf.text = 'player pos: [${player.x}, ${player.y}] drawCalls: ${engine.drawCalls}';
 
-    // move player left/right/up/down
-    if(Key.isDown(Key.LEFT) || Key.isDown(Key.A)) {
-      player.x -= dt * PLAYER_SPEED;
-    } else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.D)) {
-      player.x += dt * PLAYER_SPEED;
-    }
-
-    if(Key.isDown(Key.UP) || Key.isDown(Key.W)) {
-      player.y -= dt * PLAYER_SPEED;
-    } else if (Key.isDown(Key.DOWN) || Key.isDown(Key.S)) {
-      player.y += dt * PLAYER_SPEED;
-    }
+    updateCamera();
+    updatePlayerMovement(dt);
 
     if(Key.isDown(Key.ESCAPE)) {
       System.exit();
     }
+  }
+
+  function updateCamera() {
+    // if we want to follow the player use this:
+    // cameraController.set(
+    //   CAMERA_DISTANCE,
+    //   hxd.Math.degToRad(CAMERA_INITIAL_THETA_DEGREES),
+    //   hxd.Math.degToRad(CAMERA_INITIAL_PHI_DEGREES),
+    //   new h3d.col.Point(player.x, player.y, 0)
+    // );
+    // if we want no transition, do it immediately:
+    // cameraController.toTarget();
+  }
+
+  function updatePlayerMovement(dt: Float) {
+    var dx = 0;
+    var dy = 0;
+
+    // move player left/right/up/down
+    if(Key.isDown(Key.LEFT) || Key.isDown(Key.A)) {
+      dx = -1;
+    } else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.D)) {
+      dx = 1;
+    }
+
+    if(Key.isDown(Key.UP) || Key.isDown(Key.W)) {
+      dy = -1;
+    } else if (Key.isDown(Key.DOWN) || Key.isDown(Key.S)) {
+      dy = 1;
+    }
+
+    if (dx == 0 && dy == 0) return;
+
+    var adjusted_dx = dx / Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    var adjusted_dy = dy / Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+
+    player.x += dt * adjusted_dx * PLAYER_SPEED;
+    player.y += dt * adjusted_dy * PLAYER_SPEED;
+
+    player.setDirection(new Vector(-dy, dx, 0));
   }
 
   static function main() {
