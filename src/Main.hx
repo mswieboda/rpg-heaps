@@ -1,7 +1,5 @@
 import h2d.Text;
 import h3d.Vector;
-import h3d.scene.CameraController;
-import h3d.prim.Cube;
 import h3d.scene.Object;
 import h3d.scene.fwd.DirLight;
 import h3d.scene.fwd.LightSystem;
@@ -15,12 +13,7 @@ class Main extends App {
   var map : WorldMap;
   var tf : Text;
   var player : Player;
-  var cameraController : CameraController;
-
-  static inline var PLAYER_SPEED = 10;
-  static inline var CAMERA_DISTANCE = 64;
-  static inline var CAMERA_INITIAL_THETA_DEGREES = 90;
-  static inline var CAMERA_INITIAL_PHI_DEGREES = 60;
+  var camera : Camera;
 
   override function init() {
     map = new WorldMap(16, 256, s3d);
@@ -31,16 +24,7 @@ class Main extends App {
     player.y = 64;
     player.z = 0.99;
 
-    // set initial camera
-    cameraController = new CameraController(s3d);
-    cameraController.loadFromCamera();
-    cameraController.set(
-      CAMERA_DISTANCE,
-      hxd.Math.degToRad(CAMERA_INITIAL_THETA_DEGREES),
-      hxd.Math.degToRad(CAMERA_INITIAL_PHI_DEGREES),
-      new h3d.col.Point(64, 64, 0)
-    );
-    cameraController.toTarget();
+    camera = new Camera(s3d);
 
     // add directional light
     new DirLight(new Vector( 0.3, -0.4, -0.9), s3d);
@@ -53,52 +37,12 @@ class Main extends App {
   override function update(dt: Float) {
     tf.text = 'player pos: [${player.x}, ${player.y}] drawCalls: ${engine.drawCalls}';
 
-    updateCamera();
     player.update(dt);
+    camera.update(dt, player);
 
     if(Key.isDown(Key.ESCAPE)) {
       System.exit();
     }
-  }
-
-  function updateCamera() {
-    // if we want to follow the player use this:
-    // cameraController.set(
-    //   CAMERA_DISTANCE,
-    //   hxd.Math.degToRad(CAMERA_INITIAL_THETA_DEGREES),
-    //   hxd.Math.degToRad(CAMERA_INITIAL_PHI_DEGREES),
-    //   new h3d.col.Point(player.x, player.y, 0)
-    // );
-    // if we want no transition, do it immediately:
-    // cameraController.toTarget();
-  }
-
-  function updatePlayerMovement(dt: Float) {
-    var dx = 0;
-    var dy = 0;
-
-    // move player left/right/up/down
-    if(Key.isDown(Key.LEFT) || Key.isDown(Key.A)) {
-      dx = -1;
-    } else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.D)) {
-      dx = 1;
-    }
-
-    if(Key.isDown(Key.UP) || Key.isDown(Key.W)) {
-      dy = -1;
-    } else if (Key.isDown(Key.DOWN) || Key.isDown(Key.S)) {
-      dy = 1;
-    }
-
-    if (dx == 0 && dy == 0) return;
-
-    var adjusted_dx = dx / Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-    var adjusted_dy = dy / Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-
-    player.x += dt * adjusted_dx * PLAYER_SPEED;
-    player.y += dt * adjusted_dy * PLAYER_SPEED;
-
-    player.setDirection(new Vector(-dy, dx, 0));
   }
 
   static function main() {
