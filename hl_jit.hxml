@@ -4,3 +4,4 @@
 -hl build/main.hl
 -main Main
 -D windowSize=1366x768
+-D windowTitle=RPG
