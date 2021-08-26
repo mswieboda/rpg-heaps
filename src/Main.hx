@@ -5,15 +5,16 @@ import h3d.prim.Cube;
 import h3d.scene.Object;
 import h3d.scene.fwd.DirLight;
 import h3d.scene.fwd.LightSystem;
+import hxd.App;
 import hxd.Key;
 import hxd.Res;
 import hxd.System;
 import hxd.res.DefaultFont;
 
-class Main extends hxd.App {
+class Main extends App {
   var map : WorldMap;
   var tf : Text;
-  var player : Object;
+  var player : Player;
   var cameraController : CameraController;
 
   static inline var PLAYER_SPEED = 10;
@@ -24,19 +25,11 @@ class Main extends hxd.App {
   override function init() {
     map = new WorldMap(16, 256, s3d);
 
-    // add primitive for player mesh
-    var cache = new h3d.prim.ModelCache();
-
-    // add player in middle, to move around like a character
-    player = cache.loadModel(Res.player);
-
-    cache.dispose();
+    player = new Player(s3d);
 
     player.x = 64;
     player.y = 64;
     player.z = 0.99;
-
-    s3d.addChild(player);
 
     // set initial camera
     cameraController = new CameraController(s3d);
@@ -61,7 +54,7 @@ class Main extends hxd.App {
     tf.text = 'player pos: [${player.x}, ${player.y}] drawCalls: ${engine.drawCalls}';
 
     updateCamera();
-    updatePlayerMovement(dt);
+    player.update(dt);
 
     if(Key.isDown(Key.ESCAPE)) {
       System.exit();
