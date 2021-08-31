@@ -2,16 +2,16 @@ import h2d.Text;
 import hxd.res.DefaultFont;
 
 class MenuScene extends Scene {
-  var text : Text;
+  var menu : Menu;
 
   public function new() {
     super();
-    
-    text = new Text(DefaultFont.get(), s2d);
-    text.text = 'menu testing 123';
+
+    menu = new Menu(s2d, ["foo abc 123", "bar asdlkfjlsdjflsjdflkjsd", "baz sdlfkj"], s2d.width);
+    menu.y = s2d.height / 3;
   }
 
   public override function update(dt: Float) {
-
+    menu.update(dt);
   }
 }
