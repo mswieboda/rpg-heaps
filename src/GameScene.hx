@@ -14,7 +14,7 @@ class GameScene extends Scene {
   public function new(stage : Stage) {
     super(stage);
 
-    map = new WorldMap(16, 256, s3d);
+    map = new WorldMap(128, s3d);
 
     player = new Player(s3d);
 
