@@ -2,6 +2,7 @@ import h2d.Text;
 import h3d.Vector;
 import h3d.scene.fwd.DirLight;
 import h3d.scene.fwd.LightSystem;
+import hxd.Key;
 import hxd.res.DefaultFont;
 
 class GameScene extends Scene {
@@ -10,8 +11,8 @@ class GameScene extends Scene {
   var player : Player;
   var camera : Camera;
 
-  public function new() {
-    super();
+  public function new(stage : Stage) {
+    super(stage);
 
     map = new WorldMap(16, 256, s3d);
 
@@ -36,5 +37,9 @@ class GameScene extends Scene {
 
     player.update(dt);
     camera.update(dt, player);
+
+    if (Key.isPressed(Key.ESCAPE)) {
+      stage.changeScene(new MenuScene(stage));
+    }
   }
 }

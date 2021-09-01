@@ -8,7 +8,7 @@ class Stage {
     this.s3d = s3d;
     this.s2d = s2d;
 
-    scene = new Scene();
+    scene = new Scene(this);
   }
 
   public function update(dt: Float) {
