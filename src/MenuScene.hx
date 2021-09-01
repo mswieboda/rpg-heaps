@@ -9,17 +9,19 @@ class MenuScene extends Scene {
   public function new(stage : Stage) {
     super(stage);
 
-    menu = new Menu(s2d, ["foo abc 123", "bar asdlkfjlsdjflsjdflkjsd", "baz sdlfkj"], s2d.width);
+    var menuItemData = [{
+      text: "start",
+      action: () -> stage.changeScene(new GameScene(stage))
+    }, {
+      text: "exit",
+      action: () -> System.exit()
+    }];
+
+    menu = new Menu(s2d, menuItemData, s2d.width);
     menu.y = s2d.height / 3;
   }
 
   public override function update(dt: Float) {
     menu.update(dt);
-
-    if (Key.isPressed(Key.ENTER)) {
-      stage.changeScene(new GameScene(stage));
-    } else if (Key.isPressed(Key.ESCAPE)) {
-      System.exit();
-    }
   }
 }

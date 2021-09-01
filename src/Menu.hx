@@ -2,33 +2,37 @@ import h2d.Object;
 import hxd.Key;
 
 class Menu extends Object {
-  var items : Array<MenuItem>;
+  var menuItems : Array<MenuItem>;
   var selectedIndex : Int;
 
-  public function new(parent: Object, items : Array<String>, width: Int) {
+  public function new(parent: Object, items : Array<MenuItemData>, width: Int) {
     super(parent);
 
     selectedIndex = 0;
 
     var y = 0;
 
-    this.items = [];
+    menuItems = [];
 
     for (item in items) {
-      var menuItem = new MenuItem(this, item);
+      var menuItem = new MenuItem(this, item.text, item.action);
 
       menuItem.x = width / 2 - menuItem.width / 2;
       menuItem.y = y;
 
-      this.items.push(menuItem);
+      menuItems.push(menuItem);
 
       y += menuItem.height;
     }
 
-    this.items[0].select();
+    menuItems[0].select();
   }
 
   public function update(dt: Float) {
+    for(menuItem in menuItems) {
+      menuItem.update(dt);
+    }
+
     if(Key.isPressed(Key.UP)) {
       selectPreviousItem();
     } else if (Key.isPressed(Key.DOWN)) {
@@ -39,7 +43,7 @@ class Menu extends Object {
   function selectNextItem() {
     var index = selectedIndex + 1;
 
-    if (index >= items.length) index = 0;
+    if (index >= menuItems.length) index = 0;
 
     selectItem(index);
   }
@@ -47,20 +51,25 @@ class Menu extends Object {
   function selectPreviousItem() {
     var index = selectedIndex - 1;
 
-    if (index < 0) index = items.length - 1;
+    if (index < 0) index = menuItems.length - 1;
 
     selectItem(index);
   }
 
   function selectItem(index : Int) {
-    var item : MenuItem = items[selectedIndex];
+    var menuItem : MenuItem = menuItems[selectedIndex];
 
-    item.deselect();
+    menuItem.deselect();
 
     selectedIndex = index;
 
-    item = items[selectedIndex];
+    menuItem = menuItems[selectedIndex];
 
-    item.select();
+    menuItem.select();
   }
+}
+
+typedef MenuItemData = {
+  text : String,
+  action : Void -> Void
 }
