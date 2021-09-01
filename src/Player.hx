@@ -28,6 +28,7 @@ class Player extends Object {
   function updatePlayerMovement(dt: Float) {
     var dx = 0;
     var dy = 0;
+    var dz = 0;
 
     if(Key.isDown(Key.LEFT) || Key.isDown(Key.A)) {
       dx = -1;
@@ -41,14 +42,24 @@ class Player extends Object {
       dy = 1;
     }
 
-    if (dx == 0 && dy == 0) return;
+    if (Key.isDown(Key.Q)) {
+      dz = -1;
+    } else if (Key.isDown(Key.E)) {
+      dz = 1;
+    }
 
-    var adjusted_dx = dx / Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-    var adjusted_dy = dy / Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    if (dx != 0 || dy != 0) {
+      var adjusted_dx = dx / Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+      var adjusted_dy = dy / Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
-    x += dt * adjusted_dx * PLAYER_SPEED;
-    y += dt * adjusted_dy * PLAYER_SPEED;
+      x += dt * adjusted_dx * PLAYER_SPEED;
+      y += dt * adjusted_dy * PLAYER_SPEED;
 
-    setDirection(new Vector(-dy, dx, 0));
+      setDirection(new Vector(-dy, dx, 0));
+    }
+
+    if (dz != 0) {
+      z += dt * dz * PLAYER_SPEED;
+    }
   }
 }

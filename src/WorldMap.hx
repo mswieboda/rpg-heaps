@@ -8,6 +8,7 @@ import hxd.Res;
 
 class WorldMap extends Object {
   var worldSize : Int;
+  public var colliderObjects : Array<Object>;
 
   public function new(
     worldSize: Int,
@@ -15,6 +16,7 @@ class WorldMap extends Object {
   ) {
     super(parent);
 
+    this.colliderObjects = [];
     this.worldSize = worldSize;
 
     var cache = new ModelCache();
@@ -30,6 +32,7 @@ class WorldMap extends Object {
       matrix.translate(Math.random() * 128, Math.random() * 128, 0);
       model.setTransform(matrix);
 
+      colliderObjects.push(model);
       addChild(model);
     }
 
