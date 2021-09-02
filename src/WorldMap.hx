@@ -8,7 +8,7 @@ import hxd.Res;
 
 class WorldMap extends Object {
   var worldSize : Int;
-  public var colliderObjects : Array<Object>;
+  public var colliders : Array<Object>;
 
   public function new(
     worldSize: Int,
@@ -16,12 +16,13 @@ class WorldMap extends Object {
   ) {
     super(parent);
 
-    this.colliderObjects = [];
+    this.colliders = [];
     this.worldSize = worldSize;
 
     var cache = new ModelCache();
+    var halfWorldSize = Std.int(worldSize / 2);
 
-    for(i in 0...500) {
+    for(i in 0...250) {
       var model = Std.random(2) == 0 ? cache.loadModel(Res.tree) : cache.loadModel(Res.rock);
       var matrix = new h3d.Matrix();
       var scale = 1.2 + hxd.Math.srand(0.4);
@@ -29,25 +30,44 @@ class WorldMap extends Object {
 
       matrix.initScale(scale, scale, scale);
       matrix.rotate(0, 0, rotation);
-      matrix.translate(Math.random() * 128, Math.random() * 128, 0);
+      matrix.translate(
+        Math.random() * worldSize - halfWorldSize,
+        Math.random() * worldSize - halfWorldSize,
+        0
+      );
       model.setTransform(matrix);
 
-      colliderObjects.push(model);
-      addChild(model);
+      colliders.push(new Collider(model));
     }
 
     cache.dispose();
+
+    for (collider in colliders) {
+      addChild(collider);
+    }
 
     initPlane();
   }
 
   function initPlane() {
-    var cube = new Cube(worldSize, worldSize, 0);
+    var halfWorldSize = Std.int(worldSize / 2);
+    var tileSize = 4;
+    var tiles = Std.int(worldSize / tileSize);
+
+    var cube = new Cube(tileSize, tileSize, 0);
     cube.addNormals();
     cube.addUVs();
 
-    var soil = new Mesh(cube, this);
-    soil.material.texture = Texture.fromColor(0x408020);
-    soil.material.shadows = true;
+    for (x in 0...tiles) {
+      for (y in 0...tiles) {
+        var soil = new Mesh(cube, this);
+        var yOddEven = x % 2 == 0 ? 1 : 0;
+        var color = y % 2 == yOddEven ? 0x408020 : 0x204010;
+        soil.material.texture = Texture.fromColor(color);
+        soil.material.shadows = true;
+        soil.x = x * tileSize - halfWorldSize;
+        soil.y = y * tileSize - halfWorldSize;
+      }
+    }
   }
 }
