@@ -24,20 +24,17 @@ class WorldMap extends Object {
 
     for(i in 0...250) {
       var model = Std.random(2) == 0 ? cache.loadModel(Res.tree) : cache.loadModel(Res.rock);
-      // var obj = new Obj(model, { x: -1, y: -1, z: -1 });
-      var obj = new Obj(model, { x: 0, y: 0, z: 0 });
-      var matrix = new h3d.Matrix();
-      var scale = 1.2 + hxd.Math.srand(0.4);
-      var rotation = hxd.Math.srand(Math.PI);
 
-      matrix.initScale(scale, scale, scale);
-      matrix.rotate(0, 0, rotation);
-      matrix.translate(
+      model.scale(1.2 + hxd.Math.srand(0.4));
+
+      var obj = new Obj(model, { x: -2.5, y: -2.5, z: 0 });
+
+      obj.rotate(0, 0, hxd.Math.srand(Math.PI));
+      obj.setPosition(
         Math.random() * worldSize - halfWorldSize,
         Math.random() * worldSize - halfWorldSize,
         0
       );
-      obj.setTransform(matrix);
 
       colliders.push(obj);
     }
