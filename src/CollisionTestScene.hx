@@ -1,7 +1,5 @@
 import h2d.Text;
 import h3d.Vector;
-import h3d.col.Collider;
-import h3d.col.Ray;
 import h3d.scene.fwd.DirLight;
 import h3d.scene.fwd.LightSystem;
 import hxd.Key;
