@@ -26,7 +26,7 @@ class Camera extends CameraController {
     toTarget();
   }
 
-  public function update(dt: Float, player: Player) {
+  public function update(dt: Float, player: Object) {
     // if we want to follow the player use this:
     set(
       CAMERA_DISTANCE,

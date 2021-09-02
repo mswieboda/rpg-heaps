@@ -13,6 +13,9 @@ class MenuScene extends Scene {
       text: "start",
       action: () -> stage.changeScene(new GameScene(stage))
     }, {
+      text: "collision test",
+      action: () -> stage.changeScene(new CollisionTestScene(stage))
+    }, {
       text: "exit",
       action: () -> System.exit()
     }];
