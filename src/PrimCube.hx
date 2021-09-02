@@ -9,11 +9,6 @@ class PrimCube extends Object {
   var model : Mesh;
   var color : Int;
 
-  static inline var PLAYER_SPEED = 10;
-  static inline var COLLIDED_COLOR = 0xcc00cc;
-
-  var collided = false;
-
   public function new(parent : Object, color : Int) {
     super(parent);
 
@@ -28,22 +23,5 @@ class PrimCube extends Object {
     model.material.color.setColor(color);
 
     addChild(model);
-  }
-
-  public function update(dt : Float) {
-    updateFromCollisions(dt);
-    resetFromFrame();
-  }
-
-  function updateFromCollisions(dt : Float) {
-    model.material.color.setColor(collided ? COLLIDED_COLOR : color);
-  }
-
-  function resetFromFrame() {
-    collided = false;
-  }
-
-  public function onCollided(obj : Object) {
-    collided = true;
   }
 }

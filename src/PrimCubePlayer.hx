@@ -12,15 +12,17 @@ class PrimCubePlayer extends PrimCube {
     super(parent, color);
   }
 
-  public override function update(dt : Float) {
-    updatePlayerMovement(dt);
-    super.update(dt);
+  public function update(dt : Float, colliders : Array<PrimCube>) {
+    updatePlayerMovement(dt, colliders);
   }
 
-  function updatePlayerMovement(dt : Float) {
+  function updatePlayerMovement(dt : Float, colliders : Array<PrimCube>) {
     var dx = 0;
+    var dx_actual = 0.0;
     var dy = 0;
+    var dy_actual = 0.0;
     var dz = 0;
+    var dz_actual = 0.0;
 
     if(Key.isDown(Key.LEFT) || Key.isDown(Key.A)) {
       dx = -1;
@@ -44,14 +46,35 @@ class PrimCubePlayer extends PrimCube {
       var adjusted_dx = dx / Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
       var adjusted_dy = dy / Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
-      x += dt * adjusted_dx * PLAYER_SPEED;
-      y += dt * adjusted_dy * PLAYER_SPEED;
+      setDirection(new Vector(-dy, dx, 0));
+
+      dx_actual = dt * adjusted_dx * PLAYER_SPEED;
+      dy_actual = dt * adjusted_dy * PLAYER_SPEED;
+
+      x += dx_actual;
+      y += dy_actual;
 
       setDirection(new Vector(-dy, dx, 0));
     }
 
     if (dz != 0) {
-      z += dt * dz * PLAYER_SPEED;
+      dz_actual = dt * dz * PLAYER_SPEED;
+
+      z += dz_actual;
     }
+
+    for (collider in colliders) {
+      if (checkCollision(collider)) {
+        x -= dx_actual;
+        y -= dy_actual;
+        z -= dz_actual;
+
+        break;
+      }
+    }
+  }
+
+  function checkCollision(collider : PrimCube) : Bool {
+    return getBounds().collide(collider.getBounds());
   }
 }

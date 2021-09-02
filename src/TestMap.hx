@@ -23,6 +23,7 @@ class TestMap extends Object {
   }
 
   function initPlane() {
+    var halfWorldSize = Std.int(worldSize / 2);
     var tileSize = 4;
     var tiles = Std.int(worldSize / tileSize);
 
@@ -37,8 +38,8 @@ class TestMap extends Object {
         var color = y % 2 == yOddEven ? 0x408020 : 0x204010;
         soil.material.texture = Texture.fromColor(color);
         soil.material.shadows = true;
-        soil.x = x * tileSize;
-        soil.y = y * tileSize;
+        soil.x = x * tileSize - halfWorldSize;
+        soil.y = y * tileSize - halfWorldSize;
       }
     }
   }

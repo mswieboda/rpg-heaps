@@ -11,7 +11,7 @@ class CollisionTestScene extends Scene {
   var map : TestMap;
   var text : Text;
   var player : PrimCubePlayer;
-  var enemy : PrimCube;
+  var colliders : Array<PrimCube>;
   var camera : Camera;
 
   public function new(stage : Stage) {
@@ -20,16 +20,26 @@ class CollisionTestScene extends Scene {
     map = new TestMap(128, s3d);
 
     player = new PrimCubePlayer(s3d, 0x0000cc);
-
-    player.x = 64;
-    player.y = 64;
     player.z = 2;
 
-    enemy = new PrimCube(s3d, 0xcc0000);
+    // colliders
+    colliders = [];
 
-    enemy.x = 50;
-    enemy.y = 50;
-    enemy.z = 2;
+    var positions = [
+      { x: -10, y: -10, z: 2},
+      { x: -25, y: 30, z: 3},
+      { x: 10, y: -15, z: 1}
+    ];
+
+    for (p in positions) {
+      var enemy = new PrimCube(s3d, 0xcc0000);
+
+      enemy.x = p.x;
+      enemy.y = p.y;
+      enemy.z = p.z;
+
+      colliders.push(enemy);
+    }
 
     camera = new Camera(s3d);
 
@@ -44,25 +54,11 @@ class CollisionTestScene extends Scene {
   public override function update(dt: Float) {
     text.text = 'player pos: [${player.x}, ${player.y}, ${player.z}]';
 
-    player.update(dt);
-    enemy.update(dt);
+    player.update(dt, colliders);
     camera.update(dt, player);
-
-    checkCollisions();
 
     if (Key.isPressed(Key.ESCAPE)) {
       stage.changeScene(new MenuScene(stage));
-    }
-  }
-
-  function checkCollisions() {
-    var playerBounds = player.getBounds();
-    var enemyBounds = enemy.getBounds();
-
-    if (playerBounds.collide(enemyBounds)) {
-      text.text = 'player colliding with enemy';
-      player.onCollided(enemy);
-      enemy.onCollided(player);
     }
   }
 }
