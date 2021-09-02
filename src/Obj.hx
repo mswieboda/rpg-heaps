@@ -6,8 +6,10 @@ import hxd.Key;
 import hxd.Res;
 
 class Obj extends Object {
-  public function new(obj : Object, boundsScales : Scales) {
-    super();
+  public static inline var DEBUG = true;
+
+  public function new(obj : Object, boundsScales : Scales, ?parent : Object) {
+    super(parent);
 
     // bounding box
     var bounds = obj.getBounds();
@@ -19,7 +21,14 @@ class Obj extends Object {
     );
     cube.addNormals();
     cube.addUVs();
-    var collisionBox = new Mesh(cube, obj);
+    var collisionBox = new Mesh(cube, this);
+
+    #if debug
+    collisionBox.material.color.setColor(0x33cc0000);
+    collisionBox.material.blendMode = h2d.BlendMode.Alpha;
+    #else
+    collisionBox.visible = false;
+    #end
 
     // ignore original model bounds
     obj.ignoreBounds = true;

@@ -32,7 +32,7 @@ class GameScene extends Scene {
   public override function update(dt: Float) {
     text.text = 'player pos: [${player.x}, ${player.y}, ${player.z}]';
 
-    player.update(dt, map.colliders);
+    player.updateWithColliders(dt, map.colliders);
     camera.update(dt, player);
 
     if (Key.isPressed(Key.ESCAPE)) {

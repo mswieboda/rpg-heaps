@@ -27,7 +27,7 @@ class WorldMap extends Object {
 
       model.scale(1.2 + hxd.Math.srand(0.4));
 
-      var obj = new Obj(model, { x: -2.5, y: -2.5, z: 0 });
+      var obj = new Obj(model, { x: -2.5, y: -2.5, z: 0 }, this);
 
       obj.rotate(0, 0, hxd.Math.srand(Math.PI));
       obj.setPosition(
@@ -40,10 +40,6 @@ class WorldMap extends Object {
     }
 
     cache.dispose();
-
-    for (collider in colliders) {
-      addChild(collider);
-    }
 
     initPlane();
   }

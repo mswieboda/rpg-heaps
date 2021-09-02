@@ -5,79 +5,19 @@ import h3d.scene.Object;
 import hxd.Key;
 import hxd.Res;
 
-class Player extends Object {
-  var model : Object;
-
+class Player extends Obj {
   static inline var PLAYER_SPEED = 10;
 
-  public function new(parent : Object) {
-    super(parent);
-
+  public function new(?parent : Object) {
     var cache = new ModelCache();
-
-    model = cache.loadModel(Res.player);
-
+    var model = cache.loadModel(Res.player);
     cache.dispose();
 
-    addChild(model);
-
-    var sphere = new h3d.prim.Sphere(0.1);
-    sphere.translate(-0.05, -0.05, -0.05);
-    sphere.addNormals();
-    sphere.addUVs();
-    var bounds = collisionBounds();
-    var mesh = new h3d.scene.Mesh(sphere, this);
-    mesh.ignoreBounds = true;
-    mesh.ignoreCollide = true;
-    mesh.x = bounds.xMin;
-    mesh.y = bounds.yMin;
-    mesh.z = bounds.zMin;
-    mesh = new h3d.scene.Mesh(sphere, this);
-    mesh.ignoreBounds = true;
-    mesh.ignoreCollide = true;
-    mesh.x = bounds.xMin;
-    mesh.y = bounds.yMax;
-    mesh.z = bounds.zMin;
-    mesh = new h3d.scene.Mesh(sphere, this);
-    mesh.ignoreBounds = true;
-    mesh.ignoreCollide = true;
-    mesh.x = bounds.xMin;
-    mesh.y = bounds.yMin;
-    mesh.z = bounds.zMax;
-    mesh = new h3d.scene.Mesh(sphere, this);
-    mesh.ignoreBounds = true;
-    mesh.ignoreCollide = true;
-    mesh.x = bounds.xMin;
-    mesh.y = bounds.yMax;
-    mesh.z = bounds.zMax;
-
-    mesh = new h3d.scene.Mesh(sphere, this);
-    mesh.ignoreBounds = true;
-    mesh.ignoreCollide = true;
-    mesh.x = bounds.xMax;
-    mesh.y = bounds.yMin;
-    mesh.z = bounds.zMin;
-    mesh = new h3d.scene.Mesh(sphere, this);
-    mesh.ignoreBounds = true;
-    mesh.ignoreCollide = true;
-    mesh.x = bounds.xMax;
-    mesh.y = bounds.yMax;
-    mesh.z = bounds.zMin;
-    mesh = new h3d.scene.Mesh(sphere, this);
-    mesh.ignoreBounds = true;
-    mesh.ignoreCollide = true;
-    mesh.x = bounds.xMax;
-    mesh.y = bounds.yMin;
-    mesh.z = bounds.zMax;
-    mesh = new h3d.scene.Mesh(sphere, this);
-    mesh.ignoreBounds = true;
-    mesh.ignoreCollide = true;
-    mesh.x = bounds.xMax;
-    mesh.y = bounds.yMax;
-    mesh.z = bounds.zMax;
+    super(model, { x: -0.5, y: -0.5, z: 0 }, parent);
   }
 
-  public function update(dt : Float, colliders : Array<Object>) {
+  public function updateWithColliders(dt : Float, colliders : Array<Object>) {
+    update(dt);
     updatePlayerMovement(dt, colliders);
   }
 
@@ -139,27 +79,6 @@ class Player extends Object {
   }
 
   function checkCollision(collider : Object) : Bool {
-    var bounds = collisionBounds();
-
-    return bounds.collide(collider.getBounds());
-  }
-
-  function collisionBounds() {
-    var bounds = getBounds();
-
-    // trace(">>> bounds", bounds);
-
-    // bounds.xMax /= 2;
-    // bounds.xMin /= 2;
-    // bounds.yMax /= 2;
-    // bounds.yMin /= 2;
-
-    // stretch bounds to square in x, y directions (not z)
-    // bounds.addPos(bounds.yMax, bounds.xMax, bounds.zMin);
-    // bounds.addPos(bounds.yMin, bounds.xMin, bounds.zMin);
-
-    // trace(">>> bounds new", bounds);
-
-    return bounds;
+    return getBounds().collide(collider.getBounds());
   }
 }

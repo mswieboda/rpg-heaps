@@ -1,0 +1,4 @@
+# build in debug mode
+
+hl.hxml
+-D debug
