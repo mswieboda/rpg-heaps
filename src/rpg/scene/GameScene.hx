@@ -1,3 +1,10 @@
+package rpg.scene;
+
+import rpg.game.Camera;
+import rpg.game.Map;
+import rpg.game.Player;
+import rpg.obj.Obj;
+
 import h2d.Text;
 import h3d.Vector;
 import h3d.scene.fwd.DirLight;
@@ -9,7 +16,6 @@ import h3d.prim.ModelCache;
 import hxd.Res;
 
 class GameScene extends Scene {
-  var map : WorldMap;
   var player : Player;
   var colliderObjs : Array<Obj>;
   var obj : Obj;
@@ -21,7 +27,7 @@ class GameScene extends Scene {
 
     colliderObjs = [];
 
-    map = new WorldMap(128, s3d);
+    var map = new Map(128, s3d);
 
     for (obj in map.colliderObjs) {
       colliderObjs.push(obj);

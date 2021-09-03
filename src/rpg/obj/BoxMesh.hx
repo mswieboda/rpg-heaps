@@ -1,3 +1,5 @@
+package rpg.obj;
+
 import h3d.scene.Mesh;
 import h3d.scene.Object;
 

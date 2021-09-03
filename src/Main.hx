@@ -1,3 +1,6 @@
+import rpg.scene.Stage;
+import rpg.scene.MenuScene;
+
 import hxd.App;
 import hxd.Res;
 

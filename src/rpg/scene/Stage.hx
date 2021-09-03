@@ -1,3 +1,5 @@
+package rpg.scene;
+
 class Stage {
   public var s2d : h2d.Scene;
   public var s3d : h3d.scene.Scene;

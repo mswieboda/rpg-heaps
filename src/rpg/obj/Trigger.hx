@@ -1,4 +1,6 @@
-import BoxMesh; // for Size
+package rpg.obj;
+
+import rpg.obj.BoxMesh; // for Size
 
 import h3d.mat.BlendMode;
 import h3d.scene.Object;

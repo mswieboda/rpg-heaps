@@ -1,3 +1,5 @@
+package rpg.obj;
+
 import h3d.mat.BlendMode;
 import h3d.scene.Object;
 

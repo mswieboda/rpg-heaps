@@ -1,3 +1,5 @@
+package rpg.ui;
+
 import h2d.Object;
 import hxd.Key;
 

@@ -1,3 +1,5 @@
+package rpg.game;
+
 import h3d.col.Point;
 import h3d.scene.CameraController;
 import h3d.scene.Object;

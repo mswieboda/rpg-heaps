@@ -1,3 +1,7 @@
+package rpg.game;
+
+import rpg.obj.Obj;
+
 import h3d.Vector;
 import h3d.col.Bounds;
 import h3d.prim.ModelCache;

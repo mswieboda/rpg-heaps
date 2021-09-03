@@ -1,3 +1,7 @@
+package rpg.game;
+
+import rpg.obj.Obj;
+
 import h3d.prim.Cube;
 import h3d.mat.Texture;
 import h3d.prim.ModelCache;
@@ -5,7 +9,7 @@ import h3d.scene.Object;
 import h3d.scene.Mesh;
 import hxd.Res;
 
-class WorldMap extends Object {
+class Map extends Object {
   public var worldSize : Int;
   public var colliderObjs : Array<Obj>;
 

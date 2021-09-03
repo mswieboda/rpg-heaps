@@ -1,3 +1,7 @@
+package rpg.scene;
+
+import rpg.ui.Menu;
+
 import h2d.Text;
 import hxd.Key;
 import hxd.System;

@@ -1,5 +1,7 @@
-import Collider; // for Scales
-import BoxMesh; // for Size
+package rpg.obj;
+
+import rpg.obj.Collider; // for Scales
+import rpg.obj.BoxMesh; // for Size
 
 import h3d.mat.BlendMode;
 import h3d.scene.Object;
