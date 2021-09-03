@@ -13,15 +13,15 @@ class Player extends Obj {
     var model = cache.loadModel(Res.player);
     cache.dispose();
 
-    super(model, { x: -0.5, y: -0.5, z: 0 }, parent);
+    super(model, { x: -0.5, y: -0.5, z: 0 }, null, parent);
   }
 
-  public function updateWithColliders(dt : Float, colliders : Array<Object>) {
+  public function updateWithColliders(dt : Float, objs : Array<Obj>) {
     update(dt);
-    updatePlayerMovement(dt, colliders);
+    updatePlayerMovement(dt, objs);
   }
 
-  function updatePlayerMovement(dt : Float, colliders : Array<Object>) {
+  function updatePlayerMovement(dt : Float, objs : Array<Obj>) {
     var dx = 0;
     var dx_actual = 0.0;
     var dy = 0;
@@ -67,8 +67,8 @@ class Player extends Obj {
       z += dz_actual;
     }
 
-    for (collider in colliders) {
-      if (checkCollision(collider)) {
+    for (obj in objs) {
+      if (obj.collided(this)) {
         x -= dx_actual;
         y -= dy_actual;
         z -= dz_actual;
@@ -76,9 +76,5 @@ class Player extends Obj {
         break;
       }
     }
-  }
-
-  function checkCollision(collider : Object) : Bool {
-    return getBounds().collide(collider.getBounds());
   }
 }

@@ -5,19 +5,42 @@ import h3d.scene.fwd.LightSystem;
 import hxd.Key;
 import hxd.res.DefaultFont;
 
+import h3d.prim.ModelCache;
+import hxd.Res;
+
 class GameScene extends Scene {
   var map : WorldMap;
-  var text : Text;
   var player : Player;
+  var colliderObjs : Array<Obj>;
+  var obj : Obj;
+  var text : Text;
   var camera : Camera;
 
   public function new(stage : Stage) {
     super(stage);
 
+    colliderObjs = [];
+
     map = new WorldMap(128, s3d);
 
+    for (obj in map.colliderObjs) {
+      colliderObjs.push(obj);
+    }
+
     player = new Player(s3d);
-    player.z = 5;
+    player.z = 1.5;
+
+    // tree trigger
+    var cache = new ModelCache();
+    var model = cache.loadModel(Res.tree);
+    cache.dispose();
+
+    obj = new Obj(model, { x: -1.5, y: -1.5, z: 0 }, { x: 10, y: 10, z: 10 }, s3d);
+    obj.x = 5;
+    obj.y = 10;
+    obj.z = 0;
+
+    colliderObjs.push(obj);
 
     camera = new Camera(s3d);
 
@@ -32,8 +55,12 @@ class GameScene extends Scene {
   public override function update(dt: Float) {
     text.text = 'player pos: [${player.x}, ${player.y}, ${player.z}]';
 
-    player.updateWithColliders(dt, map.colliders);
+    player.updateWithColliders(dt, colliderObjs);
     camera.update(dt, player);
+
+    if (obj.triggered(player)) {
+      text.text += '\nboom!';
+    }
 
     if (Key.isPressed(Key.ESCAPE)) {
       stage.changeScene(new MenuScene(stage));

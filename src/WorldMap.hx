@@ -3,12 +3,11 @@ import h3d.mat.Texture;
 import h3d.prim.ModelCache;
 import h3d.scene.Object;
 import h3d.scene.Mesh;
-import h3d.scene.World;
 import hxd.Res;
 
 class WorldMap extends Object {
-  var worldSize : Int;
-  public var colliders : Array<Object>;
+  public var worldSize : Int;
+  public var colliderObjs : Array<Obj>;
 
   public function new(
     worldSize: Int,
@@ -16,32 +15,11 @@ class WorldMap extends Object {
   ) {
     super(parent);
 
-    this.colliders = [];
+    this.colliderObjs = [];
     this.worldSize = worldSize;
 
-    var cache = new ModelCache();
-    var halfWorldSize = Std.int(worldSize / 2);
-
-    for(i in 0...250) {
-      var model = Std.random(2) == 0 ? cache.loadModel(Res.tree) : cache.loadModel(Res.rock);
-
-      model.scale(1.2 + hxd.Math.srand(0.4));
-
-      var obj = new Obj(model, { x: -2.5, y: -2.5, z: 0 }, this);
-
-      obj.rotate(0, 0, hxd.Math.srand(Math.PI));
-      obj.setPosition(
-        Math.random() * worldSize - halfWorldSize,
-        Math.random() * worldSize - halfWorldSize,
-        0
-      );
-
-      colliders.push(obj);
-    }
-
-    cache.dispose();
-
     initPlane();
+    initColliderObjs();
   }
 
   function initPlane() {
@@ -64,5 +42,29 @@ class WorldMap extends Object {
         soil.y = y * tileSize - halfWorldSize;
       }
     }
+  }
+
+  function initColliderObjs() {
+    var cache = new ModelCache();
+    var halfWorldSize = Std.int(worldSize / 2);
+
+    for(i in 0...250) {
+      var model = Std.random(2) == 0 ? cache.loadModel(Res.tree) : cache.loadModel(Res.rock);
+
+      model.scale(1.2 + hxd.Math.srand(0.4));
+
+      var obj = new Obj(model, { x: -2, y: -2, z: 0 }, null, this);
+
+      obj.rotate(0, 0, hxd.Math.srand(Math.PI));
+      obj.setPosition(
+        Math.random() * worldSize - halfWorldSize,
+        Math.random() * worldSize - halfWorldSize,
+        0
+      );
+
+      colliderObjs.push(obj);
+    }
+
+    cache.dispose();
   }
 }

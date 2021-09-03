@@ -1,45 +1,39 @@
-import h3d.Vector;
-import h3d.prim.ModelCache;
-import h3d.scene.Mesh;
+import Collider; // for Scales
+import BoxMesh; // for Size
+
+import h3d.mat.BlendMode;
 import h3d.scene.Object;
-import hxd.Key;
-import hxd.Res;
 
 class Obj extends Object {
-  public static inline var DEBUG = true;
+  var collider : Collider;
+  var trigger : Trigger;
 
-  public function new(obj : Object, boundsScales : Scales, ?parent : Object) {
+  public function new(
+    model : Object,
+    ?colliderScales : Scales,
+    ?triggerSize : Size,
+    ?parent : Object
+  ) {
     super(parent);
 
-    // bounding box
-    var bounds = obj.getBounds();
-    var cube = new h3d.prim.Cube(
-      bounds.xSize + obj.scaleX * boundsScales.x,
-      bounds.ySize + obj.scaleY * boundsScales.y,
-      bounds.zSize + obj.scaleZ * boundsScales.z,
-      true
-    );
-    cube.addNormals();
-    cube.addUVs();
-    var collisionBox = new Mesh(cube, this);
+    addChild(model);
 
-    #if debug
-    collisionBox.material.color.setColor(0x33cc0000);
-    collisionBox.material.blendMode = h2d.BlendMode.Alpha;
-    #else
-    collisionBox.visible = false;
-    #end
+    if (colliderScales != null)
+      collider = new Collider(model, colliderScales, this);
 
-    // ignore original model bounds
-    obj.ignoreBounds = true;
-    addChild(obj);
+    if (triggerSize != null)
+      trigger = new Trigger(triggerSize, this);
   }
 
   public function update(dt : Float) {}
-}
 
-typedef Scales = {
-  x : Float,
-  y : Float,
-  z : Float
+  public function collided(obj : Object) : Bool {
+    if (collider == null) return false;
+    return collider.collided(obj);
+  }
+
+  public function triggered(obj : Object) : Bool {
+    if (trigger == null) return false;
+    return trigger.triggered(obj);
+  }
 }
