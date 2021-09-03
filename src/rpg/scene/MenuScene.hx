@@ -16,7 +16,14 @@ class MenuScene extends Scene {
     var menuItemData = [{
       text: "start",
       action: () -> stage.changeScene(new GameScene(stage))
-    }, {
+    },
+    #if debug
+    {
+      text: "gamepad",
+      action: () -> stage.changeScene(new GamePadScene(stage))
+    },
+    #end
+    {
       text: "exit",
       action: () -> System.exit()
     }];
@@ -27,5 +34,9 @@ class MenuScene extends Scene {
 
   public override function update(dt: Float) {
     menu.update(dt);
+
+    if (Key.isPressed(Key.ESCAPE)) {
+      System.exit();
+    }
   }
 }
