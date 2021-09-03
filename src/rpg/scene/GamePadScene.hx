@@ -2,9 +2,11 @@ package rpg.scene;
 
 import h2d.Text;
 import hxd.Key;
+import hxd.Pad;
 import hxd.res.DefaultFont;
 
 class GamePadScene extends Scene {
+  var pad : Pad;
   var text : Text;
 
   public function new(stage : Stage) {
@@ -21,19 +23,36 @@ class GamePadScene extends Scene {
     if (Key.isPressed(Key.ESCAPE)) {
       stage.changeScene(new MenuScene(stage));
     }
+
+    if (pad != null)
+      updatePad(pad);
   }
 
   function onPad(pad : hxd.Pad) {
-    if (!pad.connected)
-      text.text = "game pad not connected";
+    this.pad = pad;
 
-    text.text = "game pad connected";
+    if (!pad.connected)
+      text.text += "\ngame pad not connected";
+
+    text.text += "\ngame pad connected";
 
     pad.onDisconnect = () -> {
-      text.text = "game pad disconnected";
+      text.text += "\ngame pad disconnected";
 
       if (pad.connected)
-        text.text += "game pad disconnected (called while still connected?)";
+        text.text += " (called while still connected?)";
+    }
+  }
+
+  function updatePad(pad : Pad) {
+    var buttons = ["A","B","X","Y","LB","RB","LT","RT","back","start","dpadUp","dpadDown","dpadLeft","dpadRight"];
+
+    for (button in buttons) {
+      var buttonId = Reflect.field(pad.config, button);
+
+      if (pad.isPressed(buttonId)) {
+        text.text += "\n" + button + " isPressed";
+      }
     }
   }
 }
