@@ -1,9 +1,9 @@
 package rpg.scene;
 
+import rpg.input.Input;
 import rpg.ui.Menu;
 
 import h2d.Text;
-import hxd.Key;
 import hxd.System;
 import hxd.res.DefaultFont;
 
@@ -35,7 +35,7 @@ class MenuScene extends Scene {
   public override function update(dt: Float) {
     menu.update(dt);
 
-    if (Key.isPressed(Key.ESCAPE)) {
+    if (Input.menu.isPressed("exit")) {
       System.exit();
     }
   }

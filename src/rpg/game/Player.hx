@@ -1,5 +1,6 @@
 package rpg.game;
 
+import rpg.input.Input;
 import rpg.obj.Obj;
 
 import h3d.Vector;
@@ -34,21 +35,21 @@ class Player extends Obj {
     var dz_actual = 0.0;
     var originalDirection = getLocalDirection();
 
-    if(Key.isDown(Key.LEFT) || Key.isDown(Key.A)) {
+    if(Input.game.isDown("moveLeft")) {
       dx = -1;
-    } else if (Key.isDown(Key.RIGHT) || Key.isDown(Key.D)) {
+    } else if (Input.game.isDown("moveRight")) {
       dx = 1;
     }
 
-    if(Key.isDown(Key.UP) || Key.isDown(Key.W)) {
+    if(Input.game.isDown("moveForward")) {
       dy = -1;
-    } else if (Key.isDown(Key.DOWN) || Key.isDown(Key.S)) {
+    } else if (Input.game.isDown("moveBackward")) {
       dy = 1;
     }
 
-    if (Key.isDown(Key.Q)) {
+    if (Input.game.isDown("moveUp")) {
       dz = -1;
-    } else if (Key.isDown(Key.E)) {
+    } else if (Input.game.isDown("moveDown")) {
       dz = 1;
     }
 

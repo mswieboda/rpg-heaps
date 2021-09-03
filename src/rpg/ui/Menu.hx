@@ -1,7 +1,8 @@
 package rpg.ui;
 
+import rpg.input.Input;
+
 import h2d.Object;
-import hxd.Key;
 
 class Menu extends Object {
   var menuItems : Array<MenuItem>;
@@ -35,9 +36,9 @@ class Menu extends Object {
       menuItem.update(dt);
     }
 
-    if(Key.isPressed(Key.UP)) {
+    if(Input.menu.isPressed("up")) {
       selectPreviousItem();
-    } else if (Key.isPressed(Key.DOWN)) {
+    } else if (Input.menu.isPressed("down")) {
       selectNextItem();
     }
   }

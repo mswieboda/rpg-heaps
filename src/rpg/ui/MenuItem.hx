@@ -1,9 +1,10 @@
 package rpg.ui;
 
+import rpg.input.Input;
+
 import h2d.Text;
 import h2d.Object;
 import h3d.Vector;
-import hxd.Key;
 import hxd.res.DefaultFont;
 
 class MenuItem extends Object {
@@ -31,7 +32,7 @@ class MenuItem extends Object {
   }
 
   public function update(dt: Float) {
-    if (selected && Key.isPressed(Key.ENTER)) {
+    if (selected && Input.menu.isPressed("select")) {
       action();
     }
   }

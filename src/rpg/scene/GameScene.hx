@@ -3,6 +3,7 @@ package rpg.scene;
 import rpg.game.Camera;
 import rpg.game.Map;
 import rpg.game.Player;
+import rpg.input.Input;
 import rpg.obj.Obj;
 
 import h2d.Text;
@@ -68,7 +69,7 @@ class GameScene extends Scene {
       text.text += '\nboom!';
     }
 
-    if (Key.isPressed(Key.ESCAPE)) {
+    if (Input.game.isPressed("exit")) {
       stage.changeScene(new MenuScene(stage));
     }
   }

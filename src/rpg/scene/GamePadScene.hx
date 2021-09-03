@@ -1,9 +1,8 @@
 package rpg.scene;
 
-import rpg.input.GamePad;
+import rpg.input.Input;
 
 import h2d.Text;
-import hxd.Key;
 import hxd.res.DefaultFont;
 
 class GamePadScene extends Scene {
@@ -19,7 +18,7 @@ class GamePadScene extends Scene {
   }
 
   public override function update(dt: Float) {
-    if (Key.isPressed(Key.ESCAPE)) {
+    if (Input.menu.isPressed("exit")) {
       stage.changeScene(new MenuScene(stage));
     }
 
@@ -27,7 +26,7 @@ class GamePadScene extends Scene {
   }
 
   function updatePad() {
-    var pad = GamePad.pad;
+    var pad = Input.pad;
 
     if (!pad.connected) {
       if (wasConnected) {
