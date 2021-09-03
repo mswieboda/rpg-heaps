@@ -1,22 +1,21 @@
 package rpg.scene;
 
+import rpg.input.GamePad;
+
 import h2d.Text;
 import hxd.Key;
-import hxd.Pad;
 import hxd.res.DefaultFont;
 
 class GamePadScene extends Scene {
-  var pad : Pad;
   var text : Text;
+  var wasConnected = false;
 
   public function new(stage : Stage) {
     super(stage);
 
     // add debug text/HUD
     text = new Text(DefaultFont.get(), s2d);
-    text.text = "Waiting for game pad";
-
-    hxd.Pad.wait(onPad);
+    text.text = "waiting for game pad...";
   }
 
   public override function update(dt: Float) {
@@ -24,27 +23,27 @@ class GamePadScene extends Scene {
       stage.changeScene(new MenuScene(stage));
     }
 
-    if (pad != null)
-      updatePad(pad);
+    updatePad();
   }
 
-  function onPad(pad : hxd.Pad) {
-    this.pad = pad;
+  function updatePad() {
+    var pad = GamePad.pad;
 
-    if (!pad.connected)
-      text.text += "\ngame pad not connected";
+    if (!pad.connected) {
+      if (wasConnected) {
+        wasConnected = false;
+        text.text += "\ngame pad disconnected";
+        text.text += "\nwaiting for game pad...";
+      }
 
-    text.text += "\ngame pad connected";
-
-    pad.onDisconnect = () -> {
-      text.text += "\ngame pad disconnected";
-
-      if (pad.connected)
-        text.text += " (called while still connected?)";
+      return;
     }
-  }
 
-  function updatePad(pad : Pad) {
+    if (!wasConnected) {
+      wasConnected = true;
+      text.text += "\ngame pad connected";
+    }
+
     var buttons = ["A","B","X","Y","LB","RB","LT","RT","back","start","dpadUp","dpadDown","dpadLeft","dpadRight"];
 
     for (button in buttons) {
