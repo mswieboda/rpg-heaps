@@ -1,7 +1,9 @@
 package rpg.scene;
 
-import rpg.input.Input;
-import rpg.ui.Menu;
+import hxt.input.Input;
+import hxt.scene.Scene;
+import hxt.scene.Stage;
+import hxt.ui.Menu;
 
 import h2d.Text;
 import hxd.System;

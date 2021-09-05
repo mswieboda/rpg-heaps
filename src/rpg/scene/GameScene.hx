@@ -3,8 +3,11 @@ package rpg.scene;
 import rpg.game.Camera;
 import rpg.game.Map;
 import rpg.game.Player;
-import rpg.input.Input;
-import rpg.obj.Obj;
+
+import hxt.input.Input;
+import hxt.obj.Obj;
+import hxt.scene.Scene;
+import hxt.scene.Stage;
 
 import h2d.Text;
 import h3d.Vector;

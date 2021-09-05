@@ -1,6 +1,6 @@
 package rpg.game;
 
-import rpg.obj.Obj;
+import hxt.obj.Obj;
 
 import h3d.prim.Cube;
 import h3d.mat.Texture;

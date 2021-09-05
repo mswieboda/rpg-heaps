@@ -1,5 +1,5 @@
 -cp src
--lib heaps
+-lib hxt
 -lib hlsdl
 -hl build/main.hl
 -main Main

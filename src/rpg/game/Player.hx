@@ -1,7 +1,7 @@
 package rpg.game;
 
-import rpg.input.Input;
-import rpg.obj.Obj;
+import hxt.input.Input;
+import hxt.obj.Obj;
 
 import h3d.Vector;
 import h3d.col.Bounds;

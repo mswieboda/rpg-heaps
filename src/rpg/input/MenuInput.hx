@@ -1,6 +1,6 @@
 package rpg.input;
 
-import hxd.Key;
+import hxt.input.MappingInput;
 
 class MenuInput extends MappingInput {
   public static var INPUT_MAP : Map<String, Map<String, Array<String>>> = [

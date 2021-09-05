@@ -1,6 +1,8 @@
 package rpg.scene;
 
-import rpg.input.Input;
+import hxt.input.Input;
+import hxt.scene.Scene;
+import hxt.scene.Stage;
 
 import h2d.Text;
 import hxd.res.DefaultFont;
