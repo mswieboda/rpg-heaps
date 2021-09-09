@@ -8,9 +8,13 @@ import h3d.mat.Texture;
 import h3d.prim.Cube;
 import h3d.prim.ModelCache;
 import h3d.scene.Mesh;
+import h3d.scene.fwd.DirLight;
 import hxd.Res;
 
 class ExampleMap extends Map {
+  var treeTrigger : Obj;
+  var treeTriggered = false;
+
   override public function initPlane() {
     var halfWorldSize = Std.int(worldSize / 2);
     var tileSize = 4;
@@ -37,6 +41,11 @@ class ExampleMap extends Map {
     }
   }
 
+  override function initLights() {
+    // add directional light
+    new DirLight(new Vector(0.3, -0.4, -0.9), this);
+  }
+
   override function initColliderObjs() {
     var cache = new ModelCache();
     var halfWorldSize = Std.int(worldSize / 2);
@@ -58,6 +67,36 @@ class ExampleMap extends Map {
       colliderObjs.push(obj);
     }
 
+    // tree trigger
+    var cache = new ModelCache();
+    var model = cache.loadModel(Res.tree);
     cache.dispose();
+
+    treeTrigger = new Obj(model, Collider.scaleSize(model, new Vector(-1.5, -1.5, 0)), new Vector(10, 10, 10), this);
+    treeTrigger.x = 5;
+    treeTrigger.y = 10;
+    treeTrigger.z = 0;
+
+    colliderObjs.push(treeTrigger);
+
+    cache.dispose();
+  }
+
+  public override function update(dt : Float) {
+    super.update(dt);
+
+    if (treeTriggered) {
+      treeTriggered = treeTrigger.triggered(player);
+
+      if (!treeTriggered) {
+        trace('>>> tree untriggered!', Date.now());
+      }
+    } else {
+      treeTriggered = treeTrigger.triggered(player);
+
+      if (treeTriggered) {
+        trace('>>> tree triggered!', Date.now());
+      }
+    }
   }
 }

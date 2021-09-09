@@ -11,8 +11,12 @@ class Camera extends CameraController {
   static inline var CAMERA_INITIAL_THETA_DEGREES = 90;
   static inline var CAMERA_INITIAL_PHI_DEGREES = 60;
 
-  public function new(parent: Object) {
+  public var targetObject : Object;
+
+  public function new(targetObject : Object, ?parent : Object) {
     super(parent);
+
+    this.targetObject = targetObject;
 
     loadFromCamera();
 
@@ -23,19 +27,23 @@ class Camera extends CameraController {
       CAMERA_DISTANCE,
       hxd.Math.degToRad(CAMERA_INITIAL_THETA_DEGREES),
       hxd.Math.degToRad(CAMERA_INITIAL_PHI_DEGREES),
-      new Point(64, 64, 0)
+      new Point(0, 0, 0)
     );
     toTarget();
   }
 
-  public function update(dt: Float, player: Object) {
-    // if we want to follow the player use this:
+  public function update(dt: Float) {
+    followTarget();
+  }
+
+  function followTarget() {
     set(
       CAMERA_DISTANCE,
       hxd.Math.degToRad(CAMERA_INITIAL_THETA_DEGREES),
       hxd.Math.degToRad(CAMERA_INITIAL_PHI_DEGREES),
-      new h3d.col.Point(player.x, player.y, 0)
+      new h3d.col.Point(targetObject.x, targetObject.y, targetObject.z)
     );
+
     // if we want no transition, do it immediately:
     // toTarget();
   }
