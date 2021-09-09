@@ -7,11 +7,18 @@ import h3d.Vector;
 import h3d.col.Bounds;
 import h3d.prim.ModelCache;
 import h3d.scene.Object;
-import hxd.Key;
 import hxd.Res;
+import hxd.res.Sound;
+import hxd.snd.Channel;
 
 class Player extends Obj {
   static inline var PLAYER_SPEED = 10;
+
+  var moved = false;
+
+  var soundBump : Sound;
+  var soundChannelBump : Channel;
+  var soundBumpObj : Obj;
 
   public function new(?parent : Object) {
     var cache = new ModelCache();
@@ -19,6 +26,8 @@ class Player extends Obj {
     cache.dispose();
 
     super(model, new Vector(1, 1, 2), null, parent);
+
+    soundBump = if (hxd.res.Sound.supportedFormat(Wav)) hxd.Res.bump else null;
   }
 
   public function updateWithColliders(dt : Float, objs : Array<Obj>) {
@@ -34,6 +43,7 @@ class Player extends Obj {
     var dz = 0;
     var dz_actual = 0.0;
     var originalDirection = getLocalDirection();
+    var tryingToMove = false;
 
     if(Input.game.isDown("moveLeft")) {
       dx = -1;
@@ -63,6 +73,8 @@ class Player extends Obj {
       x += dx_actual;
       y += dy_actual;
 
+      tryingToMove = true;
+
       setDirection(new Vector(-dy, dx, 0));
     }
 
@@ -72,14 +84,25 @@ class Player extends Obj {
       z += dz_actual;
     }
 
+    var collided = false;
+
     for (obj in objs) {
       if (obj.collided(this)) {
         x -= dx_actual;
         y -= dy_actual;
         z -= dz_actual;
 
+        if (moved && (soundChannelBump == null || soundChannelBump.isReleased())) {
+          soundChannelBump = soundBump.play();
+          soundBumpObj = obj;
+        }
+
+        collided = true;
+
         break;
       }
     }
+
+    moved = tryingToMove && !collided;
   }
 }
