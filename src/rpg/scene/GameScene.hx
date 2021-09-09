@@ -14,7 +14,6 @@ import h2d.Text;
 import h3d.Vector;
 import h3d.scene.fwd.DirLight;
 import h3d.scene.fwd.LightSystem;
-import hxd.Key;
 import hxd.res.DefaultFont;
 
 import h3d.prim.ModelCache;
@@ -34,12 +33,10 @@ class GameScene extends Scene {
 
     var map = new ExampleMap(128, s3d);
 
-    for (obj in map.colliderObjs) {
-      colliderObjs.push(obj);
-    }
+    colliderObjs = colliderObjs.concat(map.colliderObjs);
 
     player = new Player(s3d);
-    player.z = 1.5;
+    player.z = 1.1;
 
     // tree trigger
     var cache = new ModelCache();
