@@ -18,11 +18,10 @@ class Map extends Object {
     super(parent);
 
     this.player = player;
+    this.worldSize = worldSize;
 
     camera = new Camera(player, parent);
-
-    this.colliderObjs = [];
-    this.worldSize = worldSize;
+    colliderObjs = [];
 
     initPlane();
     initLights();
