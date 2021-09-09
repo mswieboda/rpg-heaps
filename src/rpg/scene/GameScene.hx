@@ -1,10 +1,11 @@
 package rpg.scene;
 
 import rpg.game.Camera;
-import rpg.game.Map;
+import rpg.game.ExampleMap;
 import rpg.game.Player;
 
 import hxt.input.Input;
+import hxt.obj.Collider;
 import hxt.obj.Obj;
 import hxt.scene.Scene;
 import hxt.scene.Stage;
@@ -31,7 +32,7 @@ class GameScene extends Scene {
 
     colliderObjs = [];
 
-    var map = new Map(128, s3d);
+    var map = new ExampleMap(128, s3d);
 
     for (obj in map.colliderObjs) {
       colliderObjs.push(obj);
@@ -45,7 +46,7 @@ class GameScene extends Scene {
     var model = cache.loadModel(Res.tree);
     cache.dispose();
 
-    obj = new Obj(model, { x: -1.5, y: -1.5, z: 0 }, { x: 10, y: 10, z: 10 }, s3d);
+    obj = new Obj(model, Collider.scaleSize(model, new Vector(-1.5, -1.5, 0)), new Vector(10, 10, 10), s3d);
     obj.x = 5;
     obj.y = 10;
     obj.z = 0;

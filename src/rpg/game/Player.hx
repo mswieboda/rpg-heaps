@@ -18,7 +18,7 @@ class Player extends Obj {
     var model = cache.loadModel(Res.player);
     cache.dispose();
 
-    super(model, { x: -0.5, y: -0.5, z: 0 }, null, parent);
+    super(model, new Vector(1, 1, 2), null, parent);
   }
 
   public function updateWithColliders(dt : Float, objs : Array<Obj>) {

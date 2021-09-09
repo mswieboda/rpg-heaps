@@ -1,7 +1,9 @@
 package rpg.game;
 
+import hxt.obj.Collider;
 import hxt.obj.Obj;
 
+import h3d.Vector;
 import h3d.prim.Cube;
 import h3d.mat.Texture;
 import h3d.prim.ModelCache;
@@ -57,7 +59,7 @@ class Map extends Object {
 
       model.scale(1.2 + hxd.Math.srand(0.4));
 
-      var obj = new Obj(model, { x: -2, y: -2, z: 0 }, null, this);
+      var obj = new Obj(model, Collider.scaleSize(model, new Vector(-2, -2, 0)), null, this);
 
       obj.rotate(0, 0, hxd.Math.srand(Math.PI));
       obj.setPosition(
