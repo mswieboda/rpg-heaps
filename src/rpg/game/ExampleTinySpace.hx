@@ -60,27 +60,27 @@ class ExampleTinySpace extends Space {
     back.addUVs();
 
     var model = new Mesh(back);
-    var treeGateway = new Gateway(
+    var gateway = new Gateway(
       new Vector(0, -1, 0),
       model,
       new Vector(5, 10, 5),
       new Vector(5, 5, 5),
       this
     );
-    treeGateway.trigger.x = -2.5;
-    treeGateway.x = 5;
-    treeGateway.y = 10;
-    treeGateway.z = 2.5;
+    gateway.trigger.x = -2.5;
+    gateway.x = 5;
+    gateway.y = 10;
+    gateway.z = 2.5;
 
-    gateways["ExampleSpace"] = treeGateway;
+    gateways["ExampleSpace"] = gateway;
 
     // maybe add all gateways as colliderObjs at the end?
     // or no b/c maybe we want some gateway to not be collidable
-    colliderObjs.push(treeGateway);
+    colliderObjs.push(gateway);
 
     // cave container obj
     var cave = new Object(this);
-    cave.addChild(treeGateway);
+    cave.addChild(gateway);
 
     // cave side top
     var side = new Cube(2.5, 2.5, 5, true);
@@ -90,9 +90,9 @@ class ExampleTinySpace extends Space {
     var obj;
     model = new Mesh(side, this);
     obj = new Obj(model, Collider.scaleSize(model, new Vector(0, 0, 0)), null, this);
-    obj.x = treeGateway.x - 3.75;
-    obj.y = treeGateway.y - 3.75;
-    obj.z = treeGateway.z;
+    obj.x = gateway.x - 3.75;
+    obj.y = gateway.y - 3.75;
+    obj.z = gateway.z;
     colliderObjs.push(obj);
     cave.addChild(obj);
 
@@ -103,9 +103,9 @@ class ExampleTinySpace extends Space {
 
     model = new Mesh(side, this);
     obj = new Obj(model, Collider.scaleSize(model, new Vector(0, 0, 0)), null, this);
-    obj.x = treeGateway.x - 3.75;
-    obj.y = treeGateway.y + 3.75;
-    obj.z = treeGateway.z;
+    obj.x = gateway.x - 3.75;
+    obj.y = gateway.y + 3.75;
+    obj.z = gateway.z;
     colliderObjs.push(obj);
     cave.addChild(obj);
 

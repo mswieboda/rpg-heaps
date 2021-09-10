@@ -14,7 +14,7 @@ import h3d.scene.fwd.DirLight;
 import hxd.Res;
 
 class ExampleSpace extends Space {
-  var treeGateway : Gateway;
+  var gateway : Gateway;
 
   override public function initPlane() {
     var halfWorldSize = Std.int(worldSize / 2);
@@ -53,23 +53,23 @@ class ExampleSpace extends Space {
     cube.addUVs();
 
     var model = new Mesh(cube);
-    treeGateway = new Gateway(
+    gateway = new Gateway(
       new Vector(0, 1, 0),
       model,
       new Vector(5, 15, 5),
       new Vector(5, 5, 5),
       this
     );
-    treeGateway.trigger.x = 2.5;
-    treeGateway.x = 50;
-    treeGateway.y = 50;
-    treeGateway.z = 2.5;
+    gateway.trigger.x = 2.5;
+    gateway.x = 50;
+    gateway.y = 50;
+    gateway.z = 2.5;
 
-    gateways["ExampleTinySpace"] = treeGateway;
+    gateways["ExampleTinySpace"] = gateway;
 
     // maybe add all gateways as colliderObjs at the end?
     // or no b/c maybe we want some gateway to not be collidable
-    colliderObjs.push(treeGateway);
+    colliderObjs.push(gateway);
 
     // cave side top
     var side = new Cube(2.5, 2.5, 5, true);
@@ -79,9 +79,9 @@ class ExampleSpace extends Space {
     var obj;
     model = new Mesh(side, this);
     obj = new Obj(model, Collider.scaleSize(model, new Vector(0, 0, 0)), null, this);
-    obj.x = treeGateway.x + 3.75;
-    obj.y = treeGateway.y - 3.75;
-    obj.z = treeGateway.z;
+    obj.x = gateway.x + 3.75;
+    obj.y = gateway.y - 3.75;
+    obj.z = gateway.z;
     colliderObjs.push(obj);
 
     // cave side bottom
@@ -91,9 +91,9 @@ class ExampleSpace extends Space {
 
     model = new Mesh(side, this);
     obj = new Obj(model, Collider.scaleSize(model, new Vector(0, 0, 0)), null, this);
-    obj.x = treeGateway.x + 3.75;
-    obj.y = treeGateway.y + 3.75;
-    obj.z = treeGateway.z;
+    obj.x = gateway.x + 3.75;
+    obj.y = gateway.y + 3.75;
+    obj.z = gateway.z;
     colliderObjs.push(obj);
   }
 
@@ -108,12 +108,12 @@ class ExampleSpace extends Space {
 
       var obj = new Obj(model, Collider.scaleSize(model, new Vector(-1, -1, 0)), null, this);
 
-      // NOTE: loop makes sure to place objs far enough away from treeGateway
+      // NOTE: loop makes sure to place objs far enough away from gateway
       // (quick hack, not the great, doesn't take into account size, etc)
       do {
         obj.x = Math.random() * worldSize - halfWorldSize;
         obj.y = Math.random() * worldSize - halfWorldSize;
-      } while (Math.abs(treeGateway.x - obj.x) < 10 && Math.abs(treeGateway.y - obj.y) < 10);
+      } while (Math.abs(gateway.x - obj.x) < 10 && Math.abs(gateway.y - obj.y) < 10);
 
       colliderObjs.push(obj);
     }
