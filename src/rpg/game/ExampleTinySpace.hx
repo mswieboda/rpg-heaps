@@ -57,7 +57,13 @@ class ExampleTinySpace extends Space {
     var model = cache.loadModel(Res.tree);
     cache.dispose();
 
-    var treeGateway = new Gateway(model, Collider.scaleSize(model, new Vector(-1.5, -1.5, 0)), new Vector(10, 10, 10), this);
+    var treeGateway = new Gateway(
+      new Vector(1, 0, 0),
+      model,
+      null,
+      new Vector(10, 10, 10),
+      this
+    );
     treeGateway.x = 5;
     treeGateway.y = 10;
 

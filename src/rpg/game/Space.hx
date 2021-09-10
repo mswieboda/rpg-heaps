@@ -41,4 +41,23 @@ class Space extends Object {
   public function update(dt : Float) {
     player.updateWithColliders(dt, colliderObjs);
   }
+
+  public function gatewayTeleport(dt : Float, from : String, to : String, toSpace : Space) : Bool {
+    var gateway = gateways[to];
+    var toGateway = toSpace.gateways[from];
+
+    if (gateway == null || toGateway == null) return false;
+
+    if (gateway.active) {
+      if (gateway.triggered(player)) {
+        toGateway.teleport(player);
+
+        return true;
+      }
+    } else {
+      gateway.movePlayer(dt, player);
+    }
+
+    return false;
+  }
 }

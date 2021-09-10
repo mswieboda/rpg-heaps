@@ -8,16 +8,42 @@ import h3d.Vector;
 import h3d.scene.Object;
 
 class Gateway extends Obj {
-  // TODO: add direction to face
-  // TODO: add player spawn x, y, z location
+  public var active = true;
+  var direction : Vector;
+
   // TODO: animate/move player out of gateway
 
   public function new(
+    direction : Vector,
     model : Object,
     ?colliderSize : Vector,
     ?triggerSize : Vector,
     ?parent : Object
   ) {
     super(model, colliderSize, triggerSize, parent);
+
+    this.direction = direction;
+  }
+
+  public function teleport(player : Player) {
+    active = false;
+
+    player.active = false;
+    player.setDirection(direction);
+    player.x = x;
+    player.y = y;
+  }
+
+  public function movePlayer(dt : Float, player : Player) {
+    if (!triggered(player)) return;
+
+    var direction = direction.normalized();
+
+    player.move(dt, direction.y, -direction.x, 0);
+
+    if (!triggered(player)) {
+      player.active = true;
+      active = true;
+    }
   }
 }

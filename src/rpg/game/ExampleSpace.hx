@@ -50,7 +50,13 @@ class ExampleSpace extends Space {
     var model = cache.loadModel(Res.tree);
     cache.dispose();
 
-    var treeGateway = new Gateway(model, Collider.scaleSize(model, new Vector(-1.5, -1.5, 0)), new Vector(10, 10, 10), this);
+    var treeGateway = new Gateway(
+      new Vector(-1, 0, 0),
+      model,
+      null,
+      new Vector(10, 10, 10),
+      this
+    );
     treeGateway.x = 50;
     treeGateway.y = 50;
     treeGateway.z = 0;

@@ -40,37 +40,30 @@ class GameScene extends Scene {
     camera.update(dt);
     hud.update(dt);
 
-    checkGateways();
+    checkGateways(dt);
 
     if (Input.game.isPressed("exit")) {
       stage.changeScene(new MenuScene(stage));
     }
   }
 
-  function checkGateways() {
-    checkGateway("ExampleTinySpace", "ExampleSpace");
-    checkGateway("ExampleSpace", "ExampleTinySpace");
+  function checkGateways(dt : Float) {
+    checkGateway(dt, "ExampleTinySpace", "ExampleSpace");
+    checkGateway(dt, "ExampleSpace", "ExampleTinySpace");
   }
 
-  function checkGateway(from : String, to : String) {
+  function checkGateway(dt : Float, from : String, to : String) {
     var fromSpace = spaces[from];
     var toSpace = spaces[to];
 
-    if (fromSpace == null || toSpace == null) return;
+    if (fromSpace == null || toSpace == null || space != fromSpace) return;
 
-    var fromGateway = fromSpace.gateways[to];
-    var toGateway = toSpace.gateways[from];
-
-    if (fromGateway == null || toGateway == null) return;
-
-    if (space == fromSpace && fromGateway.triggered(player)) {
+    if (fromSpace.gatewayTeleport(dt, from, to, toSpace)) {
       changeSpace(toSpace);
-      // TODO: set player in the position of the toGateway, and set direction, etc
     }
   }
 
   public function changeSpace(space : Space) {
-    trace(">>> changeSpace", space);
     if (this.space == space) {
       return;
     }
