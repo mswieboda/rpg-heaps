@@ -5,9 +5,8 @@ import hxt.scene.Scene;
 import hxt.scene.Stage;
 import hxt.ui.Menu;
 
-import h2d.Text;
+import h3d.Vector;
 import hxd.System;
-import hxd.res.DefaultFont;
 
 class MenuScene extends Scene {
   var menu : Menu;
@@ -30,7 +29,7 @@ class MenuScene extends Scene {
       action: () -> System.exit()
     }];
 
-    menu = new Menu(s2d, menuItemData, s2d.width);
+    menu = new Menu(s2d, menuItemData, s2d.width, null, null, new Vector(0, 1, 0));
     menu.y = s2d.height / 3;
   }
 
