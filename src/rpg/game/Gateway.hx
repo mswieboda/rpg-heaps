@@ -34,6 +34,8 @@ class Gateway extends Obj {
     player.y = y;
   }
 
+  // TODO: animate into the gateway, just like Gateway#movePlayer animates out of the Gateway
+  //       and rename movePlayer to animatePlayerOut etc?
   public function movePlayer(dt : Float, player : Player) {
     if (!triggered(player)) return;
 
