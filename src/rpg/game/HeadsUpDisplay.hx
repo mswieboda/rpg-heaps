@@ -6,16 +6,20 @@ import hxd.res.DefaultFont;
 
 class HeadsUpDisplay {
   var player : Player;
-  var text : Text;
+  var debugText : Text;
 
   public function new(player : Player, parent : Object) {
     this.player = player;
 
+    #if debug
     // add debug text/HUD
-    text = new Text(DefaultFont.get(), parent);
+    debugText = new Text(DefaultFont.get(), parent);
+    #end
   }
 
   public function update(dt: Float) {
-    text.text = 'player pos: [${player.x}, ${player.y}, ${player.z}]';
+    if (debugText != null) {
+      debugText.text = 'player pos: [${player.x}, ${player.y}, ${player.z}]';
+    }
   }
 }
