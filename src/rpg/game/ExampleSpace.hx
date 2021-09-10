@@ -46,26 +46,53 @@ class ExampleSpace extends Space {
   }
 
   override function initGateways() {
-    var cache = new ModelCache();
-    var model = cache.loadModel(Res.tree);
-    cache.dispose();
+    var cube = new Cube(5, 15, 5, true);
+    cube.addNormals();
+    cube.addUVs();
 
+    var model = new Mesh(cube);
     var treeGateway = new Gateway(
-      new Vector(-1, 0, 0),
+      new Vector(0, 1, 0),
       model,
-      null,
-      new Vector(10, 10, 10),
+      new Vector(5, 15, 5),
+      new Vector(5, 5, 5),
       this
     );
+    treeGateway.trigger.x = 2.5;
     treeGateway.x = 50;
     treeGateway.y = 50;
-    treeGateway.z = 0;
+    treeGateway.z = 2.5;
 
     gateways["ExampleTinySpace"] = treeGateway;
 
     // maybe add all gateways as colliderObjs at the end?
     // or no b/c maybe we want some gateway to not be collidable
     colliderObjs.push(treeGateway);
+
+    // cave side top
+    var side = new Cube(2.5, 2.5, 5, true);
+    side.addNormals();
+    side.addUVs();
+
+    var obj;
+    model = new Mesh(side, this);
+    obj = new Obj(model, Collider.scaleSize(model, new Vector(0, 0, 0)), null, this);
+    obj.x = treeGateway.x + 3.75;
+    obj.y = treeGateway.y - 3.75;
+    obj.z = treeGateway.z;
+    colliderObjs.push(obj);
+
+    // cave side bottom
+    side = new Cube(2.5, 2.5, 5, true);
+    side.addNormals();
+    side.addUVs();
+
+    model = new Mesh(side, this);
+    obj = new Obj(model, Collider.scaleSize(model, new Vector(0, 0, 0)), null, this);
+    obj.x = treeGateway.x + 3.75;
+    obj.y = treeGateway.y + 3.75;
+    obj.z = treeGateway.z;
+    colliderObjs.push(obj);
   }
 
   override function initColliderObjs() {

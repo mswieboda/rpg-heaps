@@ -3,6 +3,7 @@ package rpg.game;
 import rpg.game.Gateway;
 
 import hxt.obj.Collider;
+import hxt.obj.Obj;
 
 import h3d.Vector;
 import h3d.mat.Texture;
@@ -53,24 +54,62 @@ class ExampleTinySpace extends Space {
   }
 
   override function initGateways() {
-    var cache = new ModelCache();
-    var model = cache.loadModel(Res.tree);
-    cache.dispose();
+    // cave model
+    var back = new Cube(5, 10, 5, true);
+    back.addNormals();
+    back.addUVs();
 
+    var model = new Mesh(back);
     var treeGateway = new Gateway(
-      new Vector(1, 0, 0),
+      new Vector(0, -1, 0),
       model,
-      null,
-      new Vector(10, 10, 10),
+      new Vector(5, 10, 5),
+      new Vector(5, 5, 5),
       this
     );
+    treeGateway.trigger.x = -2.5;
     treeGateway.x = 5;
     treeGateway.y = 10;
+    treeGateway.z = 2.5;
 
     gateways["ExampleSpace"] = treeGateway;
 
     // maybe add all gateways as colliderObjs at the end?
     // or no b/c maybe we want some gateway to not be collidable
     colliderObjs.push(treeGateway);
+
+    // cave container obj
+    var cave = new Object(this);
+    cave.addChild(treeGateway);
+
+    // cave side top
+    var side = new Cube(2.5, 2.5, 5, true);
+    side.addNormals();
+    side.addUVs();
+
+    var obj;
+    model = new Mesh(side, this);
+    obj = new Obj(model, Collider.scaleSize(model, new Vector(0, 0, 0)), null, this);
+    obj.x = treeGateway.x - 3.75;
+    obj.y = treeGateway.y - 3.75;
+    obj.z = treeGateway.z;
+    colliderObjs.push(obj);
+    cave.addChild(obj);
+
+    // cave side bottom
+    side = new Cube(2.5, 2.5, 5, true);
+    side.addNormals();
+    side.addUVs();
+
+    model = new Mesh(side, this);
+    obj = new Obj(model, Collider.scaleSize(model, new Vector(0, 0, 0)), null, this);
+    obj.x = treeGateway.x - 3.75;
+    obj.y = treeGateway.y + 3.75;
+    obj.z = treeGateway.z;
+    colliderObjs.push(obj);
+    cave.addChild(obj);
+
+    // TODO: when Gateway takes into account rotation/direction better for playerMoveIn/Out rotate cave:
+    // cave.rotate(0, 0, hxd.Math.srand(Math.PI));
   }
 }
