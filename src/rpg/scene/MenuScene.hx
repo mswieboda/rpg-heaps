@@ -17,9 +17,10 @@ class MenuScene extends Scene {
   public function new(stage : Stage) {
     super(stage);
 
-    var headerFont = DefaultFont.get().clone();
     // NOTE: DefaultFont is 12, so keep factor of 12 for best results
+    var headerFont = DefaultFont.get().clone();
     headerFont.resizeTo(36);
+
     header = new HtmlText(headerFont, s2d);
     header.text = '<font color="#ff0000">rpg</font>-<font color="#00ff00">heaps</font>';
     header.x = s2d.width / 2 - header.textWidth / 2;
@@ -40,7 +41,11 @@ class MenuScene extends Scene {
       action: () -> System.exit()
     }];
 
-    menu = new Menu(s2d, menuItemData, s2d.width, 0x00FF00);
+    // NOTE: DefaultFont is 12, so keep factor of 12 for best results
+    var menuFont = DefaultFont.get().clone();
+    menuFont.resizeTo(24);
+
+    menu = new Menu(s2d, menuItemData, s2d.width / 2, 0x00FF00, null, menuFont);
     menu.y = s2d.height / 3;
   }
 
