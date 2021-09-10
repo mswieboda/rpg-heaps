@@ -4,11 +4,12 @@ import hxt.obj.Obj;
 
 import h3d.scene.Object;
 
-class Map extends Object {
+class Space extends Object {
   var player : Player;
-  var camera : Camera;
   var colliderObjs : Array<Obj>;
   var worldSize : Int;
+
+  public var gateways : Map<String, Gateway>;
 
   public function new(
     player : Player,
@@ -19,12 +20,13 @@ class Map extends Object {
 
     this.player = player;
     this.worldSize = worldSize;
+    this.gateways = new Map<String, Gateway>();
 
-    camera = new Camera(player, parent);
     colliderObjs = [];
 
     initPlane();
     initLights();
+    initGateways();
     initColliderObjs();
   }
 
@@ -32,10 +34,11 @@ class Map extends Object {
 
   function initLights() {}
 
+  function initGateways() {}
+
   function initColliderObjs() {}
 
   public function update(dt : Float) {
     player.updateWithColliders(dt, colliderObjs);
-    camera.update(dt);
   }
 }

@@ -1,10 +1,11 @@
 package rpg.scene;
 
 import rpg.game.Camera;
-import rpg.game.ExampleMap;
+import rpg.game.ExampleSpace;
+import rpg.game.ExampleTinySpace;
 import rpg.game.HeadsUpDisplay;
-import rpg.game.Map;
 import rpg.game.Player;
+import rpg.game.Space;
 
 import hxt.input.Input;
 import hxt.scene.Scene;
@@ -12,8 +13,10 @@ import hxt.scene.Stage;
 
 class GameScene extends Scene {
   var player : Player;
+  var camera : Camera;
   var hud : HeadsUpDisplay;
-  var map : Map;
+  var space : Space;
+  var spaces : Map<String, Space>;
 
   public function new(stage : Stage) {
     super(stage);
@@ -21,16 +24,63 @@ class GameScene extends Scene {
     player = new Player(s3d);
     player.z = 1.1;
 
+    camera = new Camera(player, s3d);
+
     hud = new HeadsUpDisplay(player, s2d);
-    map = new ExampleMap(player, 128, s3d);
+
+    spaces = new Map<String, Space>();
+    spaces["ExampleSpace"] = new ExampleSpace(player, 128);
+    spaces["ExampleTinySpace"] = new ExampleTinySpace(player);
+
+    changeSpace(spaces["ExampleTinySpace"]);
   }
 
   public override function update(dt: Float) {
+    space.update(dt);
+    camera.update(dt);
     hud.update(dt);
-    map.update(dt);
+
+    checkGateways();
 
     if (Input.game.isPressed("exit")) {
       stage.changeScene(new MenuScene(stage));
     }
+  }
+
+  function checkGateways() {
+    checkGateway("ExampleTinySpace", "ExampleSpace");
+    checkGateway("ExampleSpace", "ExampleTinySpace");
+  }
+
+  function checkGateway(from : String, to : String) {
+    var fromSpace = spaces[from];
+    var toSpace = spaces[to];
+
+    if (fromSpace == null || toSpace == null) return;
+
+    var fromGateway = fromSpace.gateways[to];
+    var toGateway = toSpace.gateways[from];
+
+    if (fromGateway == null || toGateway == null) return;
+
+    if (space == fromSpace && fromGateway.triggered(player)) {
+      changeSpace(toSpace);
+      // TODO: set player in the position of the toGateway, and set direction, etc
+    }
+  }
+
+  public function changeSpace(space : Space) {
+    trace(">>> changeSpace", space);
+    if (this.space == space) {
+      return;
+    }
+
+    if (this.space != null) {
+      this.space.remove();
+    }
+
+    this.space = space;
+
+    s3d.addChild(this.space);
   }
 }
