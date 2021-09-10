@@ -50,13 +50,16 @@ class Space extends Object {
 
     if (gateway.active) {
       if (gateway.triggered(player)) {
-        // TODO: animate into the gateway, just like Gateway#movePlayer animates out of the Gateway
-        toGateway.teleport(player);
+        gateway.movePlayerIn(dt, player);
 
-        return true;
+        if (gateway.readyToTeleport(player)) {
+          toGateway.teleport(player);
+
+          return true;
+        }
       }
     } else {
-      gateway.movePlayer(dt, player);
+      gateway.movePlayerOut(dt, player);
     }
 
     return false;
