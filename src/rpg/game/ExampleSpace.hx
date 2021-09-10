@@ -14,6 +14,8 @@ import h3d.scene.fwd.DirLight;
 import hxd.Res;
 
 class ExampleSpace extends Space {
+  var treeGateway : Gateway;
+
   override public function initPlane() {
     var halfWorldSize = Std.int(worldSize / 2);
     var tileSize = 4;
@@ -51,7 +53,7 @@ class ExampleSpace extends Space {
     cube.addUVs();
 
     var model = new Mesh(cube);
-    var treeGateway = new Gateway(
+    treeGateway = new Gateway(
       new Vector(0, 1, 0),
       model,
       new Vector(5, 15, 5),
@@ -105,8 +107,13 @@ class ExampleSpace extends Space {
       model.scale(1.2 + hxd.Math.srand(0.4));
 
       var obj = new Obj(model, Collider.scaleSize(model, new Vector(-1, -1, 0)), null, this);
-      obj.x = Math.random() * worldSize - halfWorldSize;
-      obj.y = Math.random() * worldSize - halfWorldSize;
+
+      // NOTE: loop makes sure to place objs far enough away from treeGateway
+      // (quick hack, not the great, doesn't take into account size, etc)
+      do {
+        obj.x = Math.random() * worldSize - halfWorldSize;
+        obj.y = Math.random() * worldSize - halfWorldSize;
+      } while (Math.abs(treeGateway.x - obj.x) < 10 && Math.abs(treeGateway.y - obj.y) < 10);
 
       colliderObjs.push(obj);
     }
