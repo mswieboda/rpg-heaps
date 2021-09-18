@@ -19,7 +19,7 @@ class HeadsUpDisplay {
 
   public function update(dt: Float) {
     if (debugText != null) {
-      debugText.text = 'player pos: [${player.x}, ${player.y}, ${player.z}]';
+      debugText.text = 'player pos: [${player.x}, ${player.y}, ${player.z}] y_acceleration: ${player.y_acceleration}';
     }
   }
 }

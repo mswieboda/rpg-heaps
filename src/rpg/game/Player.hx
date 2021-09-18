@@ -12,10 +12,12 @@ import hxd.res.Sound;
 import hxd.snd.Channel;
 
 class Player extends Obj {
+  public static inline var GRAVITY = 9.81;
   public static inline var PLAYER_SPEED = 10;
 
   public var active = true;
 
+  public var y_acceleration = GRAVITY;
   var moved = false;
 
   var soundBump : Sound;
@@ -105,10 +107,19 @@ class Player extends Obj {
       setDirection(new Vector(-dy, dx, 0));
     }
 
+    y_acceleration += dt * GRAVITY;
+
     if (dz != 0) {
+      y_acceleration = GRAVITY;
       dz_actual = dt * dz * PLAYER_SPEED;
 
       z += dz_actual;
+    } else {
+      z -= dt * y_acceleration;
+
+      if (z < -10) {
+        z = -10;
+      }
     }
 
     var collided = false;

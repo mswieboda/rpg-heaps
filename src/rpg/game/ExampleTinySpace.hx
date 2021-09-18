@@ -41,7 +41,7 @@ class ExampleTinySpace extends Space {
         var color = 0x408020;
         #end
         soil.material.texture = Texture.fromColor(color);
-        soil.material.shadows = true;
+        soil.material.shadows = false;
         soil.x = x * tileSize - halfWorldSize;
         soil.y = y * tileSize - halfWorldSize;
       }
